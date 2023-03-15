@@ -6,9 +6,7 @@ import { COMMENTRoutes } from "./routes/COMMENTRoutes.js";
 import { categorieRoutes } from "./routes/categorieRoutes.js";
 import { empruntRoutes } from "./routes/empruntRoutes.js";
 import { livreRoutes } from "./routes/livreRoutes.js";
-import { replayRoutes } from "./routes/replayRoutes.js";
-
-// import{adminAuthValidation} from './middelwares/jwt.js'
+import{adminAuthValidation} from './middelwares/jwt.js'
 dotenv.config();
 const port = process.env.PORT;
 const dbURI = process.env.DBURI;
@@ -33,9 +31,7 @@ app.use("/COMMENT", COMMENTRoutes);
 app.use("/categories", categorieRoutes);
 app.use("/emprunts", empruntRoutes);
 app.use("/livres", livreRoutes);
-app.use("/replay", replayRoutes);
-
-// app.get('/login',adminAuthValidation)
+app.get('/login',adminAuthValidation)
 app.get("/", (req, res) => {
   res.send("Hello world");
 });

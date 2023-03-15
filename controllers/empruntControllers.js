@@ -66,3 +66,31 @@ export const deleteemprunt = async (req, res) => {
 }
 
 
+
+export const renewEmprunt = async (req, res) => {
+  try {
+    // Récupération de l'emprunt par son ID
+    const emprunt = await emprunt.findById(req.params.empruntId);
+
+    if (!emprunt) {
+      return res.status(404).json({ message: 'Emprunt not found' });
+    }
+
+    // Vérification si l'emprunt est en retard
+    if (emprunt.dateRetourPrevu < Date.now()) {
+      // Ajout d'une pénalité de suspension de 10 jours
+      emprunt.dateSuspension = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000);
+    }
+
+    // Renouvellement de la date de retour prévue
+    emprunt.dateRetourPrevu = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000); // 2 semaines
+
+    // Sauvegarde de l'emprunt modifié
+    await emprunt.save();
+
+    res.json(emprunt);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
